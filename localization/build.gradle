@@ -1,0 +1,14 @@
+plugins {
+    id 'kotlin'
+    id 'kotlinx-serialization'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2'
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.5.31-1.0.0")
+}

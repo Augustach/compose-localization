@@ -1,0 +1,13 @@
+{
+  "level1": {
+    "level2": {
+      "title": "Пора обновить приложение",
+      "nutritionValues": "Пищевая ценность на %1d г",
+      "key2": "Больше %1f кг, но меньше %2f кг",
+      "reviewsCount_one": "%1d оценка — %2s",
+      "reviewsCount_few": "%1d оценки — %2s",
+      "reviewsCount_many": "%1d оценок —  %2s",
+      "reviewsCount_other": "%1d оценок —  %2s"
+    }
+  }
+}
