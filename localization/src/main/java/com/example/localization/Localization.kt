@@ -1,7 +1,5 @@
 package com.example.localization
 
-import java.util.*
-
 class Localization(
     defaultResource: IResource,
     private val keySeparator: String = ".",
@@ -9,15 +7,15 @@ class Localization(
 ) : ILocalization {
     private val plurals = Plurals()
     private val resources = mutableMapOf(
-        defaultResource.locale to defaultResource
+        defaultResource.lang to defaultResource
     )
-    private val defaultLocale = defaultResource.locale
+    private val defaultLanguage = defaultResource.lang
 
-    inner class Translator(private val locale: Locale) : ITranslator {
+    inner class Translator(private val lang: String) : ITranslator {
         override fun t(key: String): String {
-            val resource = resources[locale]
+            val resource = resources[lang]
             return resource?.translate(key, keySeparator)
-                ?: resources[defaultLocale]?.translate(key, keySeparator) ?: key
+                ?: resources[defaultLanguage]?.translate(key, keySeparator) ?: key
         }
 
         override fun t(key: String, vararg args: Any?): String {
@@ -28,11 +26,11 @@ class Localization(
             return when (val quantity = args[pluralIndex]) {
                 null -> t(key, *args)
                 is Int -> {
-                    val pluralSuffix = plurals.getPlural(locale, quantity).category
+                    val pluralSuffix = plurals.getPlural(lang, quantity).category
                     t("$key$pluralSeparator$pluralSuffix", *args)
                 }
                 is Double -> {
-                    val pluralSuffix = plurals.getPlural(locale, quantity).category
+                    val pluralSuffix = plurals.getPlural(lang, quantity).category
                     t("$key$pluralSeparator$pluralSuffix", *args)
                 }
                 else -> t(key, *args)
@@ -40,18 +38,18 @@ class Localization(
         }
     }
 
-    fun addRule(locale: Locale, rule: Rule) = plurals.addRule(locale, rule)
+    fun addRule(lang: String, rule: Rule) = plurals.addRule(lang, rule)
 
     override fun add(vararg resource: IResource): ILocalization {
-        resource.forEach { resources[it.locale] = it }
+        resource.forEach { resources[it.lang] = it }
         return this
     }
 
     override fun get(): ITranslator {
-        return Translator(defaultLocale)
+        return Translator(defaultLanguage)
     }
 
-    override fun get(locale: Locale): ITranslator {
-        return Translator(locale)
+    override fun get(lang: String): ITranslator {
+        return Translator(lang)
     }
 }

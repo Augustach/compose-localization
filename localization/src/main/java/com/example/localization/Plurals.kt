@@ -1,6 +1,5 @@
 package com.example.localization
 
-import java.util.*
 import kotlin.math.absoluteValue
 
 /**
@@ -33,22 +32,22 @@ internal enum class EPluralCategory(val category: String) {
 }
 
 internal class Plurals {
-    private val plurals: MutableMap<Locale, Rule> = mutableMapOf()
+    private val plurals: MutableMap<String, Rule> = mutableMapOf()
 
     init {
         plurals.putAll(pluralRules)
     }
 
-    fun addRule(locale: Locale, rule: Rule) {
-        plurals[locale] = rule
+    fun addRule(lang: String, rule: Rule) {
+        plurals[lang] = rule
     }
 
-    fun getPlural(locale: Locale, quantity: Int): EPluralCategory {
-        return getPlural(locale, quantity.toDouble())
+    fun getPlural(lang: String, quantity: Int): EPluralCategory {
+        return getPlural(lang, quantity.toDouble())
     }
 
-    fun getPlural(locale: Locale, quantity: Double): EPluralCategory {
-        val rule = plurals[locale] ?: return EPluralCategory.OTHER
+    fun getPlural(lang: String, quantity: Double): EPluralCategory {
+        val rule = plurals[lang] ?: return EPluralCategory.OTHER
         val absQuantity = quantity.absoluteValue
         val (int, frac) = absQuantity.toString().split('.')
         val integerPart = int.toLong()

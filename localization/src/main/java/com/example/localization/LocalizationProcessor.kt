@@ -30,7 +30,6 @@ internal class LocalizationProcessor(
                 it.shortName.asString() == Translation::class.simpleName
             }.arguments
             val lang = arguments.first { args -> args.name?.asString() == "lang" }.value
-            val country = arguments.first { args -> args.name?.asString() == "country" }.value
             val path: String =
                 arguments.first { args -> args.name?.asString() == "path" }.value as String
             val file = File(Path(options["translationsDir"]!!, path).toString())
@@ -47,7 +46,7 @@ internal class LocalizationProcessor(
                 |       ${fillTranslations(json)}
                 |   )
                 |
-                |val $className = MapResource(Locale("$lang", "$country"), translations)
+                |val $className = MapResource("$lang", translations)
             """.trimMargin()
 
             codeGenerator.createNewFile(

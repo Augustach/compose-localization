@@ -3,15 +3,14 @@ package com.example.localization
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import java.util.*
 
 interface IResource {
-    val locale: Locale
+    val lang: String
     fun translate(key: String, separator: String): String?
 }
 
 class JsonResource(
-    override val locale: Locale,
+    override val lang: String,
     private val localization: JsonObject,
 ) : IResource {
     override fun translate(key: String, separator: String): String? {
@@ -25,7 +24,7 @@ class JsonResource(
 }
 
 class MapResource(
-    override val locale: Locale,
+    override val lang: String,
     private val translations: Map<String, String>,
 ): IResource {
     override fun translate(key: String, separator: String): String? {

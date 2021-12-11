@@ -25,7 +25,7 @@ private val RuLocale = Locale("ru")
 fun Content() {
     val (locale, setLocale) = remember { mutableStateOf(RuLocale) }
     val localization = remember { Localization(GeneratedRuResource).add(GeneratedEnResource) }
-    LocalizationProvider(localization, locale) {
+    LocalizationProvider(localization, lang = locale.language) {
         Column() {
             Text("current = ${locale.language}")
             Row {

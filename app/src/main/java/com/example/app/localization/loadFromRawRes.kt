@@ -11,5 +11,5 @@ import java.util.*
 fun ILocalization.loadFromRawRes(context: Context, locale: Locale, @RawRes resId: Int) {
     val text = context.resources.openRawResource(resId).bufferedReader().use { it.readText() }
     val json = Json.parseToJsonElement(text).jsonObject
-    this.add(JsonResource(locale, json))
+    this.add(JsonResource(locale.language, json))
 }
