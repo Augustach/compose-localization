@@ -6,7 +6,6 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import com.example.localization.ILocalization
 import com.example.localization.ITranslator
-import java.util.*
 
 val LocalLocalization = compositionLocalOf<ITranslator> { error("Not Implemented") }
 
@@ -20,8 +19,8 @@ fun t(key: String, vararg args: Any?) = LocalLocalization.current.t(key, *args)
 fun t(key: String, vararg args: Any?, pluralIndex: Int = 0) = LocalLocalization.current.t(key, *args, pluralIndex = pluralIndex)
 
 @Composable
-fun LocalizationProvider(localization: ILocalization, locale: Locale, content: @Composable () -> Unit) {
-    val translator = remember(locale) { localization.get(locale) }
+fun LocalizationProvider(localization: ILocalization, lang: String, content: @Composable () -> Unit) {
+    val translator = remember(lang) { localization.get(lang) }
     CompositionLocalProvider(
         LocalLocalization provides translator
     ) {
