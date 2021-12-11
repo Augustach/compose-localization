@@ -1,4 +1,4 @@
-package com.example.app.localization
+package com.example.localization_compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider

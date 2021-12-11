@@ -33,21 +33,22 @@ internal class LocalizationProcessor(
             val country = arguments.first { args -> args.name?.asString() == "country" }.value
             val path: String =
                 arguments.first { args -> args.name?.asString() == "path" }.value as String
-            val file = File(Path(options["projectDir"]!!, path).toString())
+            val file = File(Path(options["translationsDir"]!!, path).toString())
             val json = Json.parseToJsonElement(file.readText()).jsonObject
             val packageName = classDeclaration.containingFile!!.packageName.asString()
-            val className = "Map${classDeclaration.simpleName.asString()}"
-            val content = "".plus("package $packageName\n\n")
-                .plus("import java.util.*\n\n")
-                .plus("object $className : ${IResource::class.qualifiedName} {\n")
-                .plus("     private val translations = mutableMapOf<String, String>(\n")
-                .plus(fillTranslations(json))
-                .plus("     )\n\n")
-                .plus("     override val locale: Locale = Locale(\"${lang}\", \"${country}\")\n\n")
-                .plus("     override fun translate(key: String, separator: String): String {\n")
-                .plus("         return translations[key] ?: key\n")
-                .plus("     }\n")
-                .plus("}\n")
+            val className = "Generated${classDeclaration.simpleName.asString()}"
+            val content = """
+                |package $packageName
+                |
+                |import java.util.*
+                |import com.example.localization.MapResource
+                |
+                |private val translations = mutableMapOf<String, String>(
+                |       ${fillTranslations(json)}
+                |   )
+                |
+                |val $className = MapResource(Locale("$lang", "$country"), translations)
+            """.trimMargin()
 
             codeGenerator.createNewFile(
                 Dependencies(true, classDeclaration.containingFile!!),

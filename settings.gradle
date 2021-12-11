@@ -9,3 +9,4 @@ dependencyResolutionManagement {
 rootProject.name = "Localization"
 include ':app'
 include ':localization'
+include ':localization-compose'

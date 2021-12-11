@@ -15,7 +15,7 @@ import kotlin.math.absoluteValue
  * c	    compact decimal exponent value: exponent of the power of 10 used in compact decimal formatting.
  * e	    currently, synonym for ‘c’. however, may be redefined in the future.
  */
-internal class Rule(
+class Rule(
     val zero: (n: Double, i: Long, f: Long, v: Int) -> Boolean = { _, _, _, _ -> false },
     val one: (n: Double, i: Long, f: Long, v: Int) -> Boolean = { _, _, _, _ -> false },
     val two: (n: Double, i: Long, f: Long, v: Int) -> Boolean = { _, _, _, _ -> false },
@@ -32,7 +32,17 @@ internal enum class EPluralCategory(val category: String) {
     OTHER("other"),
 }
 
-internal object Plurals {
+internal class Plurals {
+    private val plurals: MutableMap<Locale, Rule> = mutableMapOf()
+
+    init {
+        plurals.putAll(pluralRules)
+    }
+
+    fun addRule(locale: Locale, rule: Rule) {
+        plurals[locale] = rule
+    }
+
     fun getPlural(locale: Locale, quantity: Int): EPluralCategory {
         return getPlural(locale, quantity.toDouble())
     }

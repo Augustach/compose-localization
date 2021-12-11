@@ -12,11 +12,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.app.localization.LocalizationProvider
+import com.example.localization_compose.LocalizationProvider
 import com.example.localization.Localization
-import com.example.app.localization.MapEnResource
-import com.example.app.localization.MapRuResource
-import com.example.app.localization.t
+import com.example.app.localization.GeneratedEnResource
+import com.example.app.localization.GeneratedRuResource
+import com.example.localization_compose.t
 import java.util.*
 
 private val RuLocale = Locale("ru")
@@ -24,7 +24,7 @@ private val RuLocale = Locale("ru")
 @Composable
 fun Content() {
     val (locale, setLocale) = remember { mutableStateOf(RuLocale) }
-    val localization = remember { Localization(MapRuResource).add(MapEnResource) }
+    val localization = remember { Localization(GeneratedRuResource).add(GeneratedEnResource) }
     LocalizationProvider(localization, locale) {
         Column() {
             Text("current = ${locale.language}")

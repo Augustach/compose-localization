@@ -19,7 +19,7 @@ Setup:
 1. In your app module set `projectDir`
 ```
 ksp {
-    arg("projectDir", "${projectDir}")
+    arg("translationsDir", "${projectDir}")
 }
 ```
 2. add `id 'com.google.devtools.ksp'` 
@@ -54,10 +54,10 @@ class EnResource
 
 5. create localization instance
 ```kotlin
-val localization = Localization(MapRuResource) // MapRuResource - generated class by @Translation
+val localization = Localization(GeneratedRuResource) // GeneratedRuResource - generated class by @Translation
 
 // resources can be added later
-localization.add(MapEnResource)
+localization.add(GeneratedEnResource)
 ```
 
 You can get translation via `t` method
@@ -69,7 +69,7 @@ val traslatedkey = localization.get(Locale.ENGLISH).t("level1.level2.title") // 
 It also supports string formatting
 ```kotlin
 localization.get().t("level1.level2.nutritionValues", 100) // -> "Пищевая ценность на 100 г"
-localization.get().t("level1.level2.key2", 1000.00, 9999.99) // -> "Больше %1f кг, но меньше %2f кг"
+localization.get().t("level1.level2.key2", 1000.00, 9999.99) // -> "Больше 1000,00 кг, но меньше 9999,99 кг"
 ```
 
 Pluralism also works
@@ -81,34 +81,22 @@ localization.get(Locale.ENGLISH).t("level1.level2.reviewsCount", 5, "Shop1", plu
 
 It can be used in jetpack-compose
 ```kotlin
-val LocalLocalization = compositionLocalOf<ITranslator> { error("Not Implemented") }
+import com.example.localization_compose.LocalizationProvider
+import com.example.localization.Localization
+import com.example.localization_compose.t
 
-@Composable
-fun t(key: String) = LocalLocalization.current.t(key)
-
-@Composable
-fun t(key: String, vararg args: Any?) = LocalLocalization.current.t(key, *args)
-
-@Composable
-fun t(key: String, vararg args: Any?, pluralIndex: Int = 0) = LocalLocalization.current.t(key, *args, pluralIndex = pluralIndex)
-
-@Composable
-fun LocalizationProvider(localization: ILocalization, locale: Locale, content: @Composable () -> Unit) {
-    val translator = remember(locale) { localization.get(locale) }
-    CompositionLocalProvider(
-        LocalLocalization provides translator
-    ) {
-        content()
-    }
-}
+private val RuLocale = Locale("ru")
 
 @Composable
 fun Content() {
     val (locale, setLocale) = remember { mutableStateOf(RuLocale) }
-    val localization = remember { Localization(MapRuResource).add(MapEnResource) }
+    val localization = remember { Localization(GeneratedRuResource).add(GeneratedEnResource) }
     LocalizationProvider(localization, locale) {
         Column() {
             Text(text = t("level1.level2.title"))
+            Text(text = t("level1.level2.nutritionValues", 100))
+            Text(text = t("level1.level2.key2", 1000.99, 100999.999))
+            Text(text = t("level1.level2.reviewsCount", 0, "Магазин", pluralIndex = 0))
         }
     }
 }

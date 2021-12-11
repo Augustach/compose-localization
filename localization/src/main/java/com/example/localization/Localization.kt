@@ -7,15 +7,17 @@ class Localization(
     private val keySeparator: String = ".",
     private val pluralSeparator: String = "_",
 ) : ILocalization {
+    private val plurals = Plurals()
     private val resources = mutableMapOf(
         defaultResource.locale to defaultResource
     )
-    private val currentLocale = defaultResource.locale
+    private val defaultLocale = defaultResource.locale
 
     inner class Translator(private val locale: Locale) : ITranslator {
         override fun t(key: String): String {
             val resource = resources[locale]
-            return resource?.translate(key, keySeparator) ?: key
+            return resource?.translate(key, keySeparator)
+                ?: resources[defaultLocale]?.translate(key, keySeparator) ?: key
         }
 
         override fun t(key: String, vararg args: Any?): String {
@@ -26,11 +28,11 @@ class Localization(
             return when (val quantity = args[pluralIndex]) {
                 null -> t(key, *args)
                 is Int -> {
-                    val pluralSuffix = Plurals.getPlural(locale, quantity).category
+                    val pluralSuffix = plurals.getPlural(locale, quantity).category
                     t("$key$pluralSeparator$pluralSuffix", *args)
                 }
                 is Double -> {
-                    val pluralSuffix = Plurals.getPlural(locale, quantity).category
+                    val pluralSuffix = plurals.getPlural(locale, quantity).category
                     t("$key$pluralSeparator$pluralSuffix", *args)
                 }
                 else -> t(key, *args)
@@ -38,13 +40,15 @@ class Localization(
         }
     }
 
+    fun addRule(locale: Locale, rule: Rule) = plurals.addRule(locale, rule)
+
     override fun add(vararg resource: IResource): ILocalization {
         resource.forEach { resources[it.locale] = it }
         return this
     }
 
     override fun get(): ITranslator {
-        return Translator(currentLocale)
+        return Translator(defaultLocale)
     }
 
     override fun get(locale: Locale): ITranslator {

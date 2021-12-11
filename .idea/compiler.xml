@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
       <module name="Localization.app" target="11" />
+      <module name="Localization.localization-compose" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
