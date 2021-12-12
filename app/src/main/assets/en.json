@@ -2,10 +2,10 @@
   "level1": {
     "level2": {
       "title": "It is time to update the app",
-      "nutritionValues": "Nutritional value per %1d g",
-      "key2": "More %1f кг, but less than %2f кг",
-      "reviewsCount_one": "%1d review — %2s",
-      "reviewsCount_other": "%1d reviews —  %2s"
+      "nutritionValues": "Nutritional value per {{grams}} g",
+      "key2": "More {{1}} kg, but less than {{2}} kg",
+      "reviewsCount_one": "{{count}} review — {{retailerName}}",
+      "reviewsCount_other": "{{count}} reviews — {{retailerName}}"
     }
   }
 }

@@ -1,5 +1,7 @@
 package com.example.localization
 
+private val REGEX = "\\{\\{?.+?\\}\\}".toRegex()
+
 class Localization(
     defaultResource: IResource,
     private val keySeparator: String = ".",
@@ -18,22 +20,22 @@ class Localization(
                 ?: resources[defaultLanguage]?.translate(key, keySeparator) ?: key
         }
 
-        override fun t(key: String, vararg args: Any?): String {
-            return t(key).format(*args)
+        override fun t(key: String, args: Map<String, Any>): String {
+            return t(key).replace(REGEX) { result -> args[result.value.substring(2, result.value.length - 2)].toString() }
         }
 
-        override fun t(key: String, vararg args: Any?, pluralIndex: Int): String {
-            return when (val quantity = args[pluralIndex]) {
-                null -> t(key, *args)
+        override fun t(key: String, args: Map<String, Any>, plural: String?): String {
+            return when (val quantity = args[plural]) {
+                null -> t(key, args)
                 is Int -> {
                     val pluralSuffix = plurals.getPlural(lang, quantity).category
-                    t("$key$pluralSeparator$pluralSuffix", *args)
+                    t("$key$pluralSeparator$pluralSuffix", args)
                 }
                 is Double -> {
                     val pluralSuffix = plurals.getPlural(lang, quantity).category
-                    t("$key$pluralSeparator$pluralSuffix", *args)
+                    t("$key$pluralSeparator$pluralSuffix", args)
                 }
-                else -> t(key, *args)
+                else -> t(key, args)
             }
         }
     }
@@ -45,11 +47,7 @@ class Localization(
         return this
     }
 
-    override fun get(): ITranslator {
-        return Translator(defaultLanguage)
-    }
+    override fun get() = Translator(defaultLanguage)
 
-    override fun get(lang: String): ITranslator {
-        return Translator(lang)
-    }
+    override fun get(lang: String) = Translator(lang)
 }

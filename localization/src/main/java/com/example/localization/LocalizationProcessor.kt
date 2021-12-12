@@ -39,7 +39,6 @@ internal class LocalizationProcessor(
             val content = """
                 |package $packageName
                 |
-                |import java.util.*
                 |import com.example.localization.MapResource
                 |
                 |private val translations = mutableMapOf<String, String>(
