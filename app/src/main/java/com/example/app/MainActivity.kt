@@ -38,7 +38,7 @@ fun Content() {
                 }
             }
             Text(text = t("level1.level2.title"))
-            Text(text = t("level1.level2.nutritionValues", mapOf("grams" to 100)))
+            Text(text = t("level1.level2.nutritionValues", 100))
             Text(text = t("level1.level2.key2", mapOf("1" to 1000.99, "2" to 100999.999)))
             Text(
                 text = t(
@@ -123,6 +123,12 @@ fun Content() {
                     mapOf("count" to 21, "retailerName" to "Магазин"),
                     plural = "count"
                 )
+            )
+            Text(
+                text = t("level1.items_count", 1)
+            )
+            Text(
+                text = t("level1.items_count", 2)
             )
         }
     }

@@ -4,9 +4,17 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
+private const val PLURAL_SEPARATOR = "_"
+
 interface IResource {
     val lang: String
     fun translate(key: String, separator: String): String?
+    fun plural(key: String, separator: String, pluralSuffix: String): String? {
+        return translate("$key$PLURAL_SEPARATOR$pluralSuffix", separator) ?: translate(
+            key,
+            separator
+        )
+    }
 }
 
 class JsonResource(
@@ -26,7 +34,7 @@ class JsonResource(
 class MapResource(
     override val lang: String,
     private val translations: Map<String, String>,
-): IResource {
+) : IResource {
     override fun translate(key: String, separator: String): String? {
         return translations[key]
     }

@@ -1,11 +1,8 @@
 package com.example.localization
 
-private val REGEX = "\\{\\{?.+?\\}\\}".toRegex()
-
 class Localization(
     defaultResource: IResource,
     private val keySeparator: String = ".",
-    private val pluralSeparator: String = "_",
 ) : ILocalization {
     private val plurals = Plurals()
     private val resources = mutableMapOf(
@@ -20,22 +17,36 @@ class Localization(
                 ?: resources[defaultLanguage]?.translate(key, keySeparator) ?: key
         }
 
+        override fun t(key: String, arg: Any): String {
+            return plural(key, arg).format(arg)
+        }
+
         override fun t(key: String, args: Map<String, Any>): String {
-            return t(key).replace(REGEX) { result -> args[result.value.substring(2, result.value.length - 2)].toString() }
+            return t(key).format(args)
         }
 
         override fun t(key: String, args: Map<String, Any>, plural: String?): String {
-            return when (val quantity = args[plural]) {
-                null -> t(key, args)
+            return plural(key, args[plural]).format(args)
+        }
+
+        private fun plural(key: String, pluralSuffix: String): String {
+            val resource = resources[lang]
+            return resource?.plural(key, keySeparator, pluralSuffix)
+                ?: resources[defaultLanguage]?.plural(key, keySeparator, pluralSuffix) ?: key
+        }
+
+        private fun plural(key: String, quantity: Any?): String {
+            return when (quantity) {
+                null -> t(key)
                 is Int -> {
                     val pluralSuffix = plurals.getPlural(lang, quantity).category
-                    t("$key$pluralSeparator$pluralSuffix", args)
+                    plural(key, pluralSuffix)
                 }
                 is Double -> {
                     val pluralSuffix = plurals.getPlural(lang, quantity).category
-                    t("$key$pluralSeparator$pluralSuffix", args)
+                    plural(key, pluralSuffix)
                 }
-                else -> t(key, args)
+                else -> t(key)
             }
         }
     }

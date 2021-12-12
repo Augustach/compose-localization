@@ -125,6 +125,7 @@ fun Content() {
     LocalizationProvider(localization, lang = locale.language) {
         Column() {
             Text(text = t("level1.level2.title"))
+            Text(text = t("level1.level2.nutritionValues", 100)) 
             Text(text = t("level1.level2.nutritionValues", mapOf("grams" to 100)))
             Text(text = t("level1.level2.key2", mapOf("1" to 1000.99, "2" to 100999.999)))
             Text(

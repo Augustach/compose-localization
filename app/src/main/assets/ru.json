@@ -8,6 +8,10 @@
       "reviewsCount_few": "{{count}} оценки — {{retailerName}}",
       "reviewsCount_many": "{{count}} оценок —  {{retailerName}}",
       "reviewsCount_other": "{{count}} оценок —  {{retailerName}}"
-    }
+    },
+    "items_count_one": "{{count}} товар",
+    "items_count_few": "{{count}} товара",
+    "items_count_many": "{{count}} товаров",
+    "items_count_other": "{{count}} товаров"
   }
 }

@@ -13,6 +13,9 @@ val LocalLocalization = compositionLocalOf<ITranslator> { error("Not Implemented
 fun t(key: String) = LocalLocalization.current.t(key)
 
 @Composable
+fun t(key: String, arg: Any) = LocalLocalization.current.t(key, arg)
+
+@Composable
 fun t(key: String, args: Map<String, Any>, plural: String? = null) = LocalLocalization.current.t(key, args, plural = plural)
 
 @Composable

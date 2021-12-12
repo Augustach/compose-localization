@@ -6,6 +6,8 @@
       "key2": "More {{1}} kg, but less than {{2}} kg",
       "reviewsCount_one": "{{count}} review — {{retailerName}}",
       "reviewsCount_other": "{{count}} reviews — {{retailerName}}"
-    }
+    },
+    "items_count_one": "{{count}} product",
+    "items_count_other": "{{count}} products"
   }
 }
