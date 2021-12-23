@@ -51,10 +51,10 @@ class Localization(
         }
     }
 
-    fun addRule(lang: String, rule: Rule) = plurals.addRule(lang, rule)
-
     override fun add(vararg resource: IResource): ILocalization {
-        resource.forEach { resources[it.lang] = it }
+        resource.forEach {
+            resources[it.lang] = resources[it.lang]?.merge(it) ?: it
+        }
         return this
     }
 

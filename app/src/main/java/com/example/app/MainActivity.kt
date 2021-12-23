@@ -16,6 +16,7 @@ import com.example.localization_compose.LocalizationProvider
 import com.example.localization.Localization
 import com.example.app.localization.GeneratedEnResource
 import com.example.app.localization.GeneratedRuResource
+import com.example.app.localization.T
 import com.example.localization_compose.t
 import java.util.*
 
@@ -37,9 +38,9 @@ fun Content() {
                     Text(Locale.ENGLISH.language)
                 }
             }
-            Text(text = t("level1.level2.title"))
-            Text(text = t("level1.level2.nutritionValues", 100))
-            Text(text = t("level1.level2.key2", mapOf("1" to 1000.99, "2" to 100999.999)))
+            Text(text = t(T.level1_level2_title))
+            Text(text = t(T.level1_level2_nutritionValues, 100))
+            Text(text = t(T.level1_level2_key2, mapOf("1" to 1000.99, "2" to 100999.999)))
             Text(
                 text = t(
                     "level1.level2.reviewsCount",
